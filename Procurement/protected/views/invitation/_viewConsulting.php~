@@ -1,0 +1,370 @@
+<?php
+/* @var $this InvitationController */
+/* @var $model Invitation */
+
+if($model->classification=='Consulting Services'){
+
+//ADVERTISEMENTADVERTISEMENTADVERTISEMENTADVERTISEMENTADVERTISEMENTADVERTISEMENT
+echo '<a name="ad"></a>';
+echo '<br/>';
+
+
+	if(Yii::app()->user->checkAccess('bacSec')){
+		echo '<span class="rightLink">';
+		echo CHtml::link(CHtml::encode('UPDATE'), array('updateInvitation','id'=>$model->id));
+		echo '</span>';
+	}
+
+
+echo $this->renderPartial('/invitation/_view2',array('data'=>$model,'creator'=>$bac));
+
+echo '<br/><br/>';
+
+//LOIELIDOCLOIELIDOCLOIELIDOCLOIELIDOCLOIELIDOCLOIELIDOCLOIELIDOCLOIELIDOCLOIELIDOC
+echo '<div class="stages"><a name="loi"><span class="stages">Letter of Intent, Eligibility Documents</a></div>';
+		if(Yii::app()->user->checkAccess('bacSec')){
+		 	echo '<span class="rightLink">';
+			echo CHtml::link(CHtml::encode('Set Date'), array('loiAndEligibilityReceipt/update', 'id'=>$model->id));
+			echo '</span>';
+		}
+echo '<br/><br/>';
+if(isset($loi->date_start)){
+		if(Yii::app()->user->checkAccess('privateUser')&& $model->status=='active'){
+			$temp = Loi::model()->findByAttributes(array('invitation_id'=>$model->id,'user_id'=>Yii::app()->user->id));
+			if($temp==null ){
+				echo '<span class="rightLink">';
+				echo CHtml::link(CHtml::encode('Submit my LOI'), array('loi/submit','id'=>$model->id));
+				echo '</span>';
+			}
+			else{
+				echo '<span class="rightLink">';
+				echo CHtml::link(CHtml::encode('View LOI'), array('loi/view','inv_id'=>$model->id,'id'=>$temp->id));
+				echo '</span>';
+			}
+			
+			$temp2=null;
+			$temp = Bid::model()->findByAttributes(array('invitation_id'=>$model->id,'user_id'=>Yii::app()->user->id));
+			if(isset($temp))
+			$temp2 = EligibilityBid::model()->findByPk($temp->id);
+				
+			if($temp2==null){
+				echo '<span class="rightLink">';
+				echo CHtml::link(CHtml::encode('Submit Eligibility Requirements'), array('bid/submitEli','id'=>$model->id));
+				echo '</span>';
+			}
+			else{
+				echo '<span class="rightLink">';
+				echo CHtml::link(CHtml::encode('View Eligibility Requirements'), array('bid/viewEli','id'=>$model->id));
+				echo '</span>';
+			}
+		}
+	echo '<br/><br/>';
+	?>
+	
+	<div class="viewAll" style="border:none;height:20px;padding:0px">
+		<div class="width30" style="width:70%;background-color:#dddddd;height:20px;text-align:center;font-weight:bold">
+		Title
+		</div>
+		<div class="width30" style="width:15%;background-color:#eeeeee;height:20px;text-align:center;font-weight:bold">
+		Letter of Intent
+		</div>
+		<div class="width30" style="width:15%;background-color:#dddddd;height:20px;text-align:center;font-weight:bold">
+		Eligibility
+		</div>
+	</div>
+	
+	<?php
+	if(isset($lois)){
+		$this->widget('zii.widgets.CListView', array(
+			'dataProvider'=>$lois,
+			'summaryText'=>'',
+			'itemView'=>'/loi/_viewLois',
+		));
+	}	
+	echo '<br/>';
+	echo $this->renderPartial('/loiAndEligibilityReceipt/_view',array('data'=>$loi));
+	 
+}
+
+
+//ELICHECKELICHECKELICHECKELICHECKELICHECKELICHECKELICHECKELICHECKELICHECKELICHECK
+echo '<div class="stages"><a name="elicheck"><span class="stages">Eligibility Check</a></div>';
+if(Yii::app()->user->checkAccess('bacSec')){
+		 	echo '<span class="rightLink">';
+			echo CHtml::link(CHtml::encode('Set Date'), array('eligibilityCheck/update', 'id'=>$model->id));
+			echo '</span>';
+		 	echo '<span class="rightLink">';
+			echo CHtml::link(CHtml::encode('Check Eligibility'), array('bid/checkEli', 'id'=>$model->id));
+			echo '</span>';
+		}
+echo '<br/><br/>';
+if(isset($eliCheck->date_start)){
+	echo '<br/>';
+	echo $this->renderPartial('/eligibilityCheck/_view',array('data'=>$eliCheck));
+	?>	
+	<div class="viewAll" style="border:none;height:20px;padding:0px">
+		<div class="width30" style="width:70%;background-color:#dddddd;height:20px;text-align:center;font-weight:bold">
+		Title
+		</div>
+		<div class="width30" style="width:15%;background-color:#eeeeee;height:20px;text-align:center;font-weight:bold">
+		Letter of Intent
+		</div>
+		<div class="width30" style="width:15%;background-color:#dddddd;height:20px;text-align:center;font-weight:bold">
+		Eligibility
+		</div>
+	</div>
+	
+	<?php
+	if(isset($lois)){
+		$this->widget('zii.widgets.CListView', array(
+			'dataProvider'=>$lois,
+			'summaryText'=>'',
+			'itemView'=>'/loi/_viewLois',
+		));
+	}
+}
+
+
+//SHORTLISTSHORTLISTSHORTLISTSHORTLISTSHORTLISTSHORTLISTSHORTLISTSHORTLISTSHORTLIST
+echo '<div class="stages"><a name="shortlist"><span class="stages">Shortlist</a></div>';
+if(Yii::app()->user->checkAccess('bacSec')|| Yii::app()->user->checkAccess('bacChair')){
+		 	echo '<span class="rightLink">';
+			echo CHtml::link(CHtml::encode('Set Date'), array('shortlist/update', 'id'=>$model->id));
+			echo '</span>';
+		 	echo '<span class="rightLink">';
+			echo CHtml::link(CHtml::encode('Create Shortlist'), array('bid/createShortlist', 'id'=>$model->id));
+			echo '</span>';
+		}
+echo '<br/><br/>';
+if(isset($shortlist->date_start)){
+
+	if(isset($sho)){
+		$this->widget('zii.widgets.CListView', array(
+			'dataProvider'=>$sho,
+			'summaryText'=>'',
+			'itemView'=>'/bid/_viewSho',
+		));
+	}
+	
+	echo '<br/>';
+	echo $this->renderPartial('/shortlist/_view',array('data'=>$shortlist));
+		
+
+}
+
+//BIDDINGDOCUMENTSBIDDINGDOCUMENTSBIDDINGDOCUMENTSBIDDINGDOCUMENTSBIDDINGDOCUMENTS
+echo '<div class="stages"><a name="bd"><span class="stages">Bidding Documents</a></div>';
+if(Yii::app()->user->checkAccess('bacSec')){
+		echo '<span class="rightLink">';
+	echo CHtml::link(CHtml::encode('Upload document'), array('updateBD','id'=>$model->id));
+		echo '</span>';
+}
+echo '<br/>';
+$criteria=new CDbCriteria();
+$criteria->condition="id='$model->id'";
+$result= BidDocs::model()->findAll($criteria);
+if(count($result)!=0){
+	echo "Download Bidding Documents <br>";
+	foreach($result as $doc){
+	$pdf=explode(".pdf",$doc->bidding_document);
+	if($pdf[0]!="")echo '<a href="files/bd/'.$doc->bidding_document.'"> '.$pdf[0].'.pdf</a><br>';
+	}
+}
+else{
+	echo 'Bidding Documents Not Available';
+}
+								
+//echo 'total document request: '.$model->total_document_request.'<br/><br/>';
+echo '<br/><br/>';
+
+//PRE-BIDCONFERENCEPRE-BIDCONFERENCEPRE-BIDCONFERENCEPRE-BIDCONFERENCEPRE-BIDCONFERENCE
+echo '<div class="stages"><a name="pre-bid"><span class="stages">Pre-Bid Conference</a></div>';
+	if( Yii::app()->user->checkAccess('bacSec')){
+		echo '<span class="rightLink">';
+		echo CHtml::link(CHtml::encode('Set Date'), array('preBidConference/update', 'id'=>$model->id, 'inv_creator_id'=>$bac->id));
+		echo '</span>';
+	} 
+	echo '<br/><br/>';
+if(isset($preBid->date_start)){
+	echo $this->renderPartial('/preBidConference/_view',array('data'=>$preBid));
+	echo '<br/>';
+}
+
+//ENVELOPESENVELOPESENVELOPESENVELOPESENVELOPESENVELOPESENVELOPESENVELOPES
+echo '<div class="stages"><a name="envelope"><span class="stages">Eligibility, Technical and Financial Bid Evaluation</a></div>';
+	if(Yii::app()->user->checkAccess('bacUser')){
+		 	echo '<span class="rightLink">';
+			echo CHtml::link(CHtml::encode('Set Date'), array('bidEnvelopesOpening/update', 'id'=>$model->id));
+			echo '</span>';
+			
+		 	echo '<span class="rightLink">';
+		 	echo CHtml::link(CHtml::encode('Check Bids'), array('bid/check', 'id'=>$model->id));
+		 	echo '</span>';
+		}
+	if(Yii::app()->user->checkAccess('privateUser')&& $model->status=='active'){
+		
+		$criteria=new CDbCriteria();
+		$criteria->condition="id='$model->id'";
+		$result= BidDocs::model()->findAll($criteria);
+		if(count($result)!=0){
+			$temp = Bid::model()->findByAttributes(array('invitation_id'=>$model->id,'user_id'=>Yii::app()->user->id));
+		if($temp===null ){
+			echo '<span class="rightLink">';
+			echo CHtml::link(CHtml::encode('Submit my bid'), array('bid/submit','id'=>$model->id));
+			echo '</span>';
+		}
+		else{
+			echo '<span class="rightLink">';
+			echo CHtml::link(CHtml::encode('View my bid'), array('bid/view','id'=>$model->id));
+			echo '</span>';
+		}
+		}
+	}
+	echo '<br/></br>';
+	if(isset($bidEnv->date_start)){
+	if(isset($sho)){
+		$this->widget('zii.widgets.CListView', array(
+			'dataProvider'=>$sho,
+			'summaryText'=>'',
+			'itemView'=>'/bid/_viewBids',
+		));
+		if(Yii::app()->user->checkAccess('bacSec')){
+			if($model->status!="failed"){
+				echo '<span class="rightLink">';
+				echo CHtml::link(CHtml::encode('Fail Bidding'), array('invitation/failBid','id'=>$model->id));
+				echo '</span>';
+			}
+		}
+		echo "<br/>";
+	}
+		echo '<br/>';
+	/*
+	$this->widget('zii.widgets.CDetailView', array(
+		'data'=>$bidEnv,
+		'attributes'=>array(
+			'date_start',
+			'date_end',
+			'time_start',
+			'time_end',
+			'details',
+			'participants',
+		),
+	));
+	*/
+	
+	echo $this->renderPartial('/bidEnvelopesOpening/_view',array('data'=>$bidEnv));
+	echo '<br/>';
+}
+
+//BIDEVALUATIONBIDEVALUATIONBIDEVALUATIONBIDEVALUATIONBIDEVALUATIONBIDEVALUATION
+echo '<div class="stages"><a name="bidEvaluation"><span class="stages">Selection of Highest Rated Bid</a></div>';
+		if(Yii::app()->user->checkAccess('bacChair')){
+		 	echo '<span class="rightLink">';
+		 		echo CHtml::link(CHtml::encode('Set Date'), array('bidEvaluation/update', 'id'=>$model->id));
+		 	echo '</span>';
+		 	echo '<span class="rightLink">';
+		 		echo CHtml::link(CHtml::encode('Update CCP'), array('bid/updateBidsCCP', 'id'=>$model->id));
+		 	echo '</span>';
+		}
+		echo '<br/><br/>';
+if(isset($bidEval->date_start)){
+	if(isset($sho)){
+		$this->widget('zii.widgets.CListView', array(
+			'dataProvider'=>$sho,
+			'itemView'=>'/bid/_viewBidsCCP',
+		));
+	}
+	echo '<br/>';
+	
+	echo $this->renderPartial('/bidEvaluation/_view',array('data'=>$bidEval));
+	echo '<br/>';
+}
+
+//NEGOTIATENEGOTIATENEGOTIATENEGOTIATENEGOTIATENEGOTIATENEGOTIATENEGOTIATENEGOTIATE
+echo '<div class="stages"><a name="negotiate"><span class="stages">Negotiate</a></div>';
+		if(Yii::app()->user->checkAccess('bacUser')){
+		 	echo '<span class="rightLink">';
+		 		echo CHtml::link(CHtml::encode('Set Date'), array('negotiation/update', 'id'=>$model->id));
+		 	echo '</span>';
+		}
+		echo '<br/><br/>';
+if(isset($nego->date_start)){
+	echo '<br/>';
+	echo $this->renderPartial('/negotiation/_view',array('data'=>$nego));
+
+}
+
+//POSTQUALIFICATIONPOSTQUALIFICATIONPOSTQUALIFICATIONPOSTQUALIFICATIONPOSTQUALIFICATION
+echo '<div class="stages"><a name="postQualification"><span class="stages">Post-Qualification</a></div>';
+		if(Yii::app()->user->checkAccess('bacChair')){
+		 	echo '<span class="rightLink">';
+			echo CHtml::link(CHtml::encode('Set Date'), array('postQualification/update', 'id'=>$model->id));
+			echo '</span>';
+			echo '<span class="rightLink">';
+			echo CHtml::link(CHtml::encode('Update LCRB'), array('postQualification/updateLCRB', 'id'=>$model->id));
+			echo '</span>';
+		}
+	echo '<br/><br/>';
+if(isset($postQua->date_start)){
+	
+	if(isset($bids)){
+		$this->widget('zii.widgets.CListView', array(
+			'dataProvider'=>$bids,
+			'summaryText'=>'',
+			'itemView'=>'/postQualification/_viewBidsLCRB',
+		));
+			if(Yii::app()->user->checkAccess('bacChair')){
+				if($model->status!="failed"){
+					echo '<span class="rightLink">';
+					echo CHtml::link(CHtml::encode('Fail Bidding'), array('invitation/failBid','id'=>$model->id));
+					echo '<br/>';
+				}
+			}
+	}	
+
+	echo $this->renderPartial('/postQualification/_view',array('data'=>$postQua));
+	echo '<br/>';
+}
+
+//AWARDINGAWARDINGAWARDINGAWARDINGAWARDINGAWARDINGAWARDINGAWARDING
+echo '<div class="stages"><a name="award"><span class="stages">Award</a></div>';
+		if(Yii::app()->user->checkAccess('LCE')){
+			echo '<span class="rightLink">';
+			echo CHtml::link(CHtml::encode('Set Date'), array('awarding/update', 'id'=>$model->id));
+			echo '</span>';
+		}
+	echo '<br/><br/>';
+if(isset($awarding->date_awarded)){
+	
+	echo $this->renderPartial('/awarding/_view',array('data'=>$awarding)); 
+	echo '<br/>';
+}
+
+//NOTICE TO PROCEED
+echo '<div class="stages"><a name="ntp"><span class="stages">Notice to Proceed</a></div>';
+		if(Yii::app()->user->checkAccess('LCE')){
+		 	echo '<span class="rightLink">';
+		 	echo CHtml::link(CHtml::encode('Set Date'), array('ntp/update', 'id'=>$model->id));
+		 	echo '</span>';
+		}
+	echo '<br/><br/>';
+if(isset($ntp->date_of_notice)){
+	
+	echo $this->renderPartial('/ntp/_view',array('data'=>$ntp));
+	 
+	echo '<br/>';
+}
+}
+
+
+
+if(Yii::app()->user->checkAccess('LCE')){
+	if($model->status != 'awarded'&& isset($model->awardee)){
+	 	echo '<span class="awardLink">';
+	 	echo CHtml::link(CHtml::encode('Post Award'), array('invitation/postAward', 'id'=>$model->id));
+	 	echo '</span>';
+	}
+	}
+
+
+
