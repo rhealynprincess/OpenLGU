@@ -1,0 +1,21 @@
+<?php
+/* @var $this SiteController */
+
+$this->pageTitle=Yii::app()->name;
+?>
+
+<p><h2><i>Welcome to <?php echo CHtml::encode(Yii::app()->name); ?></i></h2></p>
+
+
+Features:
+<ul>
+<li>Account Creation
+<li>Business Registration
+<li>Assessment of Fees
+<li>Payment Records
+<li>Business Permit Generation
+</ul>
+
+
+
+

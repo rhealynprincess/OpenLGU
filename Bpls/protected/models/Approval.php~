@@ -1,0 +1,156 @@
+<?php
+
+/**
+ * This is the model class for table "{{approval}}".
+ *
+ * The followings are the available columns in table '{{approval}}':
+ * @property integer $approval_id
+ * @property string $sic_code
+ * @property string $property_index_code
+ * @property string $postal_code
+ * @property string $full_business_name
+ * @property string $remarks
+ * @property string $approval_status
+ * @property string $business_reg_num
+ * @property string $action_date
+ * @property string $approval_date
+ * @property string $issue_date
+ * @property string $next_renewal_date
+ * @property string $sys_entry_date
+ * @property integer $account_holder_id
+ *
+ * The followings are the available model relations:
+ * @property Issuance[] $issuances
+ * @property BusAcctHolder $accountHolder
+ */
+class Approval extends CActiveRecord
+{
+	/**
+	 * Returns the static model of the specified AR class.
+	 * @param string $className active record class name.
+	 * @return Approval the static model class
+	 */
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return '{{approval}}';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+			array('account_holder_id', 'numerical', 'integerOnly'=>true),
+			array('sic_code, remarks, action_date, approval_date, issue_date, next_renewal_date', 'required'),
+			array('sic_code, property_index_code, postal_code, full_business_name, remarks, approval_status, business_reg_num, action_date, approval_date, issue_date, next_renewal_date, sys_entry_date', 'safe'),
+			// The following rule is used by search().
+			// Please remove those attributes that should not be searched.
+			array('approval_id, sic_code, property_index_code, postal_code, full_business_name, remarks, approval_status, business_reg_num, action_date, approval_date, issue_date, next_renewal_date, sys_entry_date, account_holder_id', 'safe', 'on'=>'search'),
+		);
+	}
+
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+			'issuance' => array(self::HAS_MANY, 'Issuance', 'approval_id'),
+			'busAcctHolder' => array(self::BELONGS_TO, 'BusAcctHolder', 'account_holder_id'),
+		);
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'approval_id' => 'Approval ID',
+			'sic_code' => 'SIC Code',
+			'property_index_code' => 'Property Index Code',
+			'postal_code' => 'Postal Code',
+			'full_business_name' => 'Full Business Name',
+			'remarks' => 'Remarks',
+			'approval_status' => 'Approval Status',
+			'business_reg_num' => 'Business Registration No.',
+			'action_date' => 'Action Date',
+			'approval_date' => 'Approval Date',
+			'issue_date' => 'Issue Date',
+			'next_renewal_date' => 'Next Renewal Date',
+			'sys_entry_date' => 'Sys Entry Date',
+			'account_holder_id' => 'Account Holder ID',
+		);
+	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function search()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('approval_id',$this->approval_id);
+		$criteria->compare('sic_code',$this->sic_code,true);
+		$criteria->compare('property_index_code',$this->property_index_code,true);
+		$criteria->compare('postal_code',$this->postal_code,true);
+		$criteria->compare('full_business_name',$this->full_business_name,true);
+		$criteria->compare('remarks',$this->remarks,true);
+		$criteria->compare('approval_status',$this->approval_status,true);
+		$criteria->compare('business_reg_num',$this->business_reg_num,true);
+		$criteria->compare('action_date',$this->action_date,true);
+		$criteria->compare('approval_date',$this->approval_date,true);
+		$criteria->compare('issue_date',$this->issue_date,true);
+		$criteria->compare('next_renewal_date',$this->next_renewal_date,true);
+		$criteria->compare('sys_entry_date',$this->sys_entry_date,true);
+		$criteria->compare('account_holder_id',$this->account_holder_id);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+	
+	
+	public function makeIssuance()
+	{
+		$issuance = new Issuance;
+		$issuance->approval_id = $this->approval_id;
+		$issuance->business_reg_num = $this->business_reg_num;
+		$issuance->full_business_name = $this->full_business_name;
+		
+		$criteria = new CDbCriteria;
+		$criteria->addCondition('payment_holder_id = '.$this->busAcctHolder->paymentHolder->payment_holder_id);
+		$criteria->order = 'due_date ASC';
+		$criteria->limit = 1;
+		
+		$payMode = PayMode::model()->find($criteria);
+		
+		$issuance->or_reference = $payMode->or_num;
+		$issuance->or_reference_date = $payMode->paymentDetail->sys_entry_date;
+		$issuance->released_to = $this->busAcctHolder->business->user->full_name;
+		$issuance->scheduled_release_date = $this->issue_date;
+		$issuance->actual_release_date = date('Y-m-d');
+		$issuance->sys_entry_date = date('Y-m-d');
+		
+		$issuance->save();
+		//$issuance->approval->busAcctHolder->business->sendMail('APPROVAL');
+	}
+	
+}
