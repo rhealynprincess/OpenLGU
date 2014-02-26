@@ -1,0 +1,47 @@
+<?php
+/* @var $this AdminController */
+/* @var $model Admin */
+
+/*$this->breadcrumbs=array(
+	'Admins'=>array('index'),
+	$model->username,
+);
+*/
+$this->widget('zii.widgets.CBreadcrumbs', array (
+
+'homeLink'=>CHtml::link('Home', array('Admin/index')),
+'links' => array(
+			$model->username,
+		),
+));
+
+if(Yii::app()->user->getState("user_role")=="project implementor"){
+	$this->menu=array(
+	array('label'=>'List Projects and Programs', 'url'=>array('projectImplementor/index')),
+);
+}
+else{
+$this->menu=array(
+	array('label'=>'List Users', 'url'=>array('index')),
+	array('label'=>'Create User', 'url'=>array('create')),
+	array('label'=>'Update User', 'url'=>array('update', 'id'=>$model->username)),
+	array('label'=>'Delete User', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->username),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>'Manage Users', 'url'=>array('admin')),
+);
+}
+?>
+
+<h1><?php echo $model->username; ?></h1>
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		'first_name',
+		'middle_name',
+		'last_name',
+		'username',
+		'password',
+		'sector',
+		'user_role',
+	),
+)); ?>
