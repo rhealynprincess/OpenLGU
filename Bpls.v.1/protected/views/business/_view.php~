@@ -1,0 +1,34 @@
+<?php
+/* @var $this BusinessController */
+/* @var $data Business */
+?>
+
+
+<div class="view">
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('name')); ?>:</b>
+	<?php echo CHtml::link(CHtml::encode($data->name), array('view', 'id'=>$data->business_id)); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('trade_name')); ?>:</b>
+	<?php echo CHtml::encode($data->trade_name); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('org_type')); ?>:</b>
+	<?php echo CHtml::encode($data->org_type); ?>
+	<br />
+	
+	<b><?php echo CHtml::encode($data->getAttributeLabel('status')); ?>:</b>
+	<?php if($data->status == 'NEW PENDING' || $data->status == 'RENEWAL PENDING'){ ?>
+	<b style="color:red"><?php echo CHtml::encode($data->status); ?></b>
+	<?php } ?>
+	<?php if($data->status == 'APPROVED'){ ?>
+	<b style="color:green"><?php echo CHtml::encode($data->status); ?></b>
+	<?php } ?>
+	<?php if($data->status == 'APPROVED - Pay Dues'){ ?>
+	<b style="color:green"><?php echo CHtml::encode($data->status); ?></b>
+	<?php } ?>
+	
+	<br />
+
+</div>

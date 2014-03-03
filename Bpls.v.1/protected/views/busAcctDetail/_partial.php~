@@ -1,0 +1,24 @@
+<div class="view">
+		<h4 style="text-align:center"><b>Gross Sales Tax</b></h4>
+		<?php $this->widget('zii.widgets.CDetailView', array(
+			'data'=>$model,
+			'attributes'=>array(
+				'gross_sales_tax',
+				'gross_sales_tax_amt',
+				'gross_sales_tax_pnl',
+			),
+		)); ?>
+	</div>
+	
+	
+	<div class="view">
+		<h4 style="text-align:center"><b>Transport Truck Tax</b></h4>
+		<?php $this->widget('zii.widgets.CDetailView', array(
+			'data'=>$model,
+			'attributes'=>array(
+				'transport_truck_tax',
+				'transport_truck_tax_amt',
+				'transport_truck_tax_pnl',
+			),
+		)); ?>
+	</div>

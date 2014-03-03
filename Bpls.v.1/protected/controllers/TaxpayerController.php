@@ -1,0 +1,463 @@
+<?php
+date_default_timezone_set('Asia/Manila');
+
+$script_tz = date_default_timezone_get();
+
+?>
+
+<?php
+
+class TaxpayerController extends Controller
+{
+	/**
+	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
+	 * using two-column layout. See 'protected/views/layouts/column2.php'.
+	 */
+	public $layout='//layouts/column2';
+
+	/**
+	 * @return array action filters
+	 */
+	public function filters()
+	{
+		return array(
+			'accessControl', // perform access control for CRUD operations
+			'postOnly + delete', // we only allow deletion via POST request
+		);
+	}
+
+	/**
+	 * Specifies the access control rules.
+	 * This method is used by the 'accessControl' filter.
+	 * @return array access control rules
+	 */
+	public function accessRules()
+	{
+		return array(
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+				'actions'=>array('admin','delete', 'view', 'create', 'update', 'changePassword'),
+				'expression'=>'!$user->isGuest && $user->getState(\'role\')=="ADMIN"',
+			),
+			array('allow',
+				'actions'=>array('profile', 'changePassword'),
+				'expression'=>'!$user->isGuest && $user->getState(\'role\')=="REGISTERED"',
+			),
+			array('allow',
+				'actions'=>array('view'),
+				'expression'=>'!$user->isGuest && $user->getState(\'role\')=="BPLO"',
+			),
+			array('allow',
+				'actions'=>array('view'),
+				'expression'=>'!$user->isGuest && $user->getState(\'role\')=="ASSESSOR"',
+			),
+			array('allow',
+				'actions'=>array('view'),
+				'expression'=>'!$user->isGuest && $user->getState(\'role\')=="TREASURY"',
+			),
+			array('allow',
+				'actions'=>array('view'),
+				'expression'=>'!$user->isGuest && $user->getState(\'role\')=="LCE"',
+			),
+			array('deny',  // deny all users
+				'users'=>array('*'),
+			),
+		);
+	}
+
+	/**
+	 * Displays a particular model.
+	 * @param integer $id the ID of the model to be displayed
+	 */
+	public function actionView($id)
+	{
+		if(Yii::app()->user->role == 'REGISTERED')
+		{
+			$model = Taxpayer::model()->findByPk($id);
+			$adrModel = Address::model()->findAllByAttributes(array('user_id'=>$model->user_id));
+			$crfModel = ContactReference::model()->findAllByAttributes(array('user_id'=>$model->user_id));
+			$emcModel = EmergencyContact::model()->findByAttributes(array('user_id'=>$model->user_id));
+		
+		
+		
+			$this->render('view',array(
+				'model'=>$model,
+				'adrModel'=>$adrModel,
+				'crfModel'=>$crfModel,
+				'emcModel'=>$emcModel,
+			));
+		} elseif(Yii::app()->user->role == 'BPLO' || Yii::app()->user->role == 'ASSESSOR' || Yii::app()->user->role == 'TREASURY' || Yii::app()->user->role == 'LCE')
+		{
+			$this->layout = 'column1';
+			$busModel = Business::model()->findByPk($id);
+			$model = Taxpayer::model()->findByPk($busModel->user_id);
+			$adrModel = Address::model()->findAllByAttributes(array('user_id'=>$model->user_id));
+			$crfModel = ContactReference::model()->findAllByAttributes(array('user_id'=>$model->user_id));
+			$emcModel = EmergencyContact::model()->findByAttributes(array('user_id'=>$model->user_id));
+		
+		
+		
+			$this->render('view',array(
+				'model'=>$model,
+				'adrModel'=>$adrModel,
+				'crfModel'=>$crfModel,
+				'emcModel'=>$emcModel,
+				'busModel'=>$busModel,
+			));
+		} elseif(Yii::app()->user->role == 'ADMIN')
+		{
+			$model = Taxpayer::model()->findByPk($id);
+			$adrModel = Address::model()->findAllByAttributes(array('user_id'=>$model->user_id));
+			$crfModel = ContactReference::model()->findAllByAttributes(array('user_id'=>$model->user_id));
+			$emcModel = EmergencyContact::model()->findByAttributes(array('user_id'=>$model->user_id));
+			
+			$this->render('view', array(
+				'model'=>$model,
+				'adrModel'=>$adrModel,
+				'crfModel'=>$crfModel,
+				'emcModel'=>$emcModel,
+			));
+			
+		}
+	}
+
+	/**
+	 * Creates a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionCreate()
+	{
+		
+		$model= new Taxpayer;
+		$adrModel = new Address;
+		$crfModel = new ContactReference;
+		$emcModel = new EmergencyContact;
+		
+		$model->setScenario('create');
+
+		// Uncomment the following line if AJAX validation is needed
+		$this->performAjaxValidation($model);
+		$this->performAjaxValidation($adrModel);
+		$this->performAjaxValidation($crfModel);
+		$this->performAjaxValidation($emcModel);
+
+		if(isset($_POST['Taxpayer']) && isset($_POST['Address']) && isset($_POST['ContactReference']) && isset($_POST['EmergencyContact']))
+		{
+			//Taxpayer
+			$model->attributes=$_POST['Taxpayer'];
+			
+			$model->full_name = $model->first_name." ".$model->middle_name." ".$model->last_name;
+			if($model->suffix_name !== '')
+			{
+				$model->full_name = $model->full_name.", ".$model->suffix_name;
+			}
+			$model->dob_full = $model->dob_year."-".$model->dob_month."-".$model->dob_day;
+			$model->sys_entry_date = date('Y-m-d');
+			
+			//Address
+			$adrModel->attributes = $_POST['Address'];
+			$adrModel->full_address = $adrModel->unit_num." ".$adrModel->street.", ".$adrModel->subdivision.", ".$adrModel->barangay;
+			$adrModel->sys_entry_date = date('Y-m-d');
+			
+			//Contact Reference
+			$crfModel->attributes = $_POST['ContactReference'];
+			$crfModel->sys_entry_date = date('Y-m-d');
+			
+			//Emergency Contact
+			$emcModel->attributes = $_POST['EmergencyContact'];
+			$emcModel->full_name = $emcModel->first_name." ".$emcModel->middle_name." ".$emcModel->last_name;
+			if($emcModel->suffix_name !== '')
+			{
+				$emcModel->full_name = $emcModel->full_name.", ".$emcModel->suffix_name;
+			}
+			$emcModel->sys_entry_date = date('Y-m-d');
+			
+			
+			if($model->save())
+			{
+				$adrModel->user_id = $model->user_id;
+				$crfModel->user_id = $model->user_id;
+				$emcModel->user_id = $model->user_id;
+				
+				if($adrModel->save() && $crfModel->save() && $emcModel->save())
+				{
+					$this->redirect(array('view','id'=>$model->user_id));
+				}
+			}
+		}
+
+		$this->render('create',array(
+			'model'=>$model,
+			'adrModel'=>$adrModel,
+			'crfModel'=>$crfModel,
+			'emcModel'=>$emcModel,
+		));
+	}
+
+	/**
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param integer $id the ID of the model to be updated
+	 */
+	public function actionUpdate($id)
+	{
+		$this->layout = 'column1';
+		$model=$this->loadModel($id);
+		$model->setScenario('update');
+		
+
+		// Uncomment the following line if AJAX validation is needed
+		$this->performAjaxValidation($model);
+	
+
+		if(isset($_POST['Taxpayer']))
+		{
+		
+			$model->attributes=$_POST['Taxpayer'];
+			$model->full_name = $model->first_name." ".$model->middle_name." ".$model->last_name;
+			if($model->suffix_name !== '')
+			{
+				$model->full_name = $model->full_name.", ".$model->suffix_name;
+			}
+			$model->dob_full = $model->dob_year."-".$model->dob_month."-".$model->dob_day;
+			
+			if($model->save())
+			{
+				if(Yii::app()->user->role == 'ADMIN')
+					$this->redirect(array('view','id'=>$model->user_id));
+				if(Yii::app()->user->role == 'REGISTERED')
+					$this->redirect(array('profile','id'=>$model->user_id));
+			}
+		}
+
+		$this->render('update',array(
+			'model'=>$model,
+			
+		));
+	}
+
+	/**
+	 * Deletes a particular model.
+	 * If deletion is successful, the browser will be redirected to the 'admin' page.
+	 * @param integer $id the ID of the model to be deleted
+	 */
+	public function actionDelete($id)
+	{
+		$model = $this->loadModel($id);
+		$adrModel = Address::model()->findAllByAttributes(array('user_id'=>$model->user_id));
+		$crfModel = ContactReference::model()->findAllByAttributes(array('user_id'=>$model->user_id));
+		$emcModel = EmergencyContact::model()->findByAttributes(array('user_id'=>$model->user_id));
+
+		foreach($adrModel as $index)
+		{
+			$index->delete();
+		}
+		
+		foreach($crfModel as $index)
+		{
+			$index->delete();
+		}
+		
+		$emcModel->delete();
+		
+		$busModel = Business::model()->findAllByAttributes(array('user_id'=>$model->user_id));
+		if($busModel !== null)
+		{
+			foreach($busModel as $index)
+			{
+				$acctHolder = BusAcctHolder::model()->findAllByAttributes(array('business_id'=>$index->business_id));
+				if($acctHolder !== null)
+				{
+					foreach($acctHolder as $trial)
+					{
+		
+						$docModel = Document::model()->findByAttributes(array('account_holder_id'=>$trial->account_holder_id));
+						if($docModel !== null)
+						{
+							unlink(Yii::app()->basePath."/..".$docModel->file_path.$docModel->barangay_clearance);
+							unlink(Yii::app()->basePath."/..".$docModel->file_path.$docModel->zoning_clearance);
+							unlink(Yii::app()->basePath."/..".$docModel->file_path.$docModel->sanitary_clearance);
+							unlink(Yii::app()->basePath."/..".$docModel->file_path.$docModel->occupancy_permit);
+							unlink(Yii::app()->basePath."/..".$docModel->file_path.$docModel->fire_safety);
+							rmdir(Yii::app()->basePath."/..".$docModel->file_path);
+							rmdir(Yii::app()->basePath."/../assets/uploads/documents/".$trial->business_id);
+						}
+		
+	
+						$acctDetail = BusAcctDetail::model()->findByAttributes(array('account_holder_id'=>$trial->account_holder_id));
+						if($acctDetail !== null)
+						$acctDetail->delete();
+		
+						$paymentHolder = PaymentHolder::model()->findByAttributes(array('account_holder_id'=>$trial->account_holder_id));
+						if($paymentHolder !== null)
+						{
+						$payModeModel = PayMode::model()->findAllByAttributes(array('payment_holder_id'=>$paymentHolder->payment_holder_id));
+			
+			
+							foreach($payModeModel as $test)
+							{
+								$paymentDetail = PaymentDetail::model()->findByAttributes(array('pay_mode_id'=>$test->pay_mode_id));
+								if($paymentDetail !== null)
+									$paymentDetail->delete();
+								if($test !== null)
+								$test->delete();
+							}
+			
+
+							$paymentHolder->delete();
+						}
+		
+						$approval = Approval::model()->findByAttributes(array('account_holder_id'=>$trial->account_holder_id));
+
+						if($approval !== null)
+						{
+				
+							$issuance = Issuance::model()->findByAttributes(array('approval_id'=>$approval->approval_id));
+							if($issuance !== null)
+								$issuance->delete();
+							$approval->delete();
+				
+						}
+		
+						if($docModel !== null)
+							$docModel->delete();
+		
+						$progress = Progress::model()->findByAttributes(array('account_holder_id'=>$trial->account_holder_id));
+						if($progress !== null)
+						$progress->delete();
+			
+						$trial->delete();
+					}
+				}
+				
+				
+				$index->delete();
+			}
+		}
+		
+		$model->delete();
+		
+
+		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+
+	/**
+	 * Lists all models.
+	 */
+	public function actionIndex()
+	{
+		$dataProvider=new CActiveDataProvider('Taxpayer');
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
+		));
+	}
+
+	/**
+	 * Manages all models.
+	 */
+	public function actionAdmin()
+	{
+		$model=new Taxpayer('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Taxpayer']))
+			$model->attributes=$_GET['Taxpayer'];
+
+		$this->render('admin',array(
+			'model'=>$model,
+		));
+	}
+	
+	/**
+	 * Renders own profile of REGISTERED taxpayer
+	 */
+	public function actionProfile()
+	{
+		$id = Yii::app()->user->id;
+		
+		$model = Taxpayer::model()->findByPk($id);
+		$adrModel = Address::model()->findAllByAttributes(array('user_id'=>$model->user_id));
+		$crfModel = ContactReference::model()->findAllByAttributes(array('user_id'=>$model->user_id));
+		$emcModel = EmergencyContact::model()->findByAttributes(array('user_id'=>$model->user_id));
+		
+		$this->render('profile',array(
+			'model'=>$model,
+			'adrModel'=>$adrModel,
+			'crfModel'=>$crfModel,
+			'emcModel'=>$emcModel,
+		));
+
+	}
+	
+	public function actionChangePassword($id)
+	{
+		$this->layout = 'column1';
+		$tempModel = Taxpayer::model()->findByPk($id);
+		$model = new Taxpayer;
+		$model->setScenario('changePassword');
+		
+		
+		
+		$this->performAjaxValidation($model);
+		
+		if(isset($_POST['Taxpayer']))
+		{
+		
+			$model->attributes=$_POST['Taxpayer'];
+			
+			if(md5(md5($model->oldPassword) . Yii::app()->params["salt"]) === $tempModel->password)
+			{
+				$tempModel->password = $model->hashPassword($model->newPassword);
+				$tempModel->save();
+				Yii::app()->user->setFlash('success password', 'Password updated successfully.');
+
+					
+			}
+			else
+			{
+				Yii::app()->user->setFlash('error', "Wrong Password");
+			}
+			
+			$this->redirect(array('changePassword', 'id'=>$id));
+		}
+		
+		$this->render('changePassword',array(
+			'model'=>$model,
+		));
+	}
+
+
+	/**
+	 * Returns the data model based on the primary key given in the GET variable.
+	 * If the data model is not found, an HTTP exception will be raised.
+	 * @param integer $id the ID of the model to be loaded
+	 * @return Taxpayer the loaded model
+	 * @throws CHttpException
+	 */
+	public function loadModel($id)
+	{
+		$model=Taxpayer::model()->findByPk($id);
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
+	}
+
+	/**
+	 * Performs the AJAX validation.
+	 * @param Taxpayer $model the model to be validated
+	 */
+	protected function performAjaxValidation($model)
+	{
+		if(isset($_POST['ajax']) && $_POST['ajax']==='taxpayer-form')
+		{
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+		
+		if(isset($_POST['ajax']) && $_POST['ajax']==='changePassword-taxpayer-form')
+		{
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+	}
+}

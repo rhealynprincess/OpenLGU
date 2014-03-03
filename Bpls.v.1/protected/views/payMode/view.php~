@@ -1,0 +1,95 @@
+<?php
+/* @var $this PayModeController */
+/* @var $model PayMode */
+
+if((Yii::app()->user->role == 'TREASURY'))
+{
+	$this->breadcrumbs=array(
+		'Businesses'=>array('business/admin'),
+		$model->paymentHolder->busAcctHolder->business->name=>array('business/view', 'id'=>$model->paymentHolder->busAcctHolder->business->business_id),
+		'Payment Schedule' => array('payMode/index', 'id'=>$model->payment_holder_id),
+		$model->name,
+	);
+
+	
+
+
+	if($paymentDetail === null)
+	{
+	$this->menu=array(
+			array('label'=>'Set Due Date and Amount Due', 'url'=>array('update', 'id'=>$model->pay_mode_id)),
+			array('label'=>'Create Payment', 'url'=>array('paymentDetail/create', 'id'=>$model->pay_mode_id)),
+		);	
+	} elseif($paymentDetail !==null)
+	{
+		$this->menu=array(
+		
+			array('label'=>'View Payment', 'url'=>array('paymentDetail/view', 'id'=>$model->paymentDetail->payment_detail_id)),
+		);
+	}
+
+} elseif(Yii::app()->user->role == 'REGISTERED')
+{
+	$this->breadcrumbs=array(
+		'My Businesses'=>array('business/index', 'id'=>$model->paymentHolder->busAcctHolder->business->user_id),
+		$model->paymentHolder->busAcctHolder->business->name=>array('business/view', 'id'=>$model->paymentHolder->busAcctHolder->business->business_id),
+		'Payment Record'=>array('payMode/index', 'id'=>$model->paymentHolder->payment_holder_id),
+		$model->paymentHolder->busAcctHolder->business->name." - ".$model->name,
+	);
+} elseif(Yii::app()->user->role == 'LCE')
+{
+	$this->breadcrumbs=array(
+		'Businesses'=>array('business/admin'),
+		$model->paymentHolder->busAcctHolder->business->name=>array('business/view', 'id'=>$model->paymentHolder->busAcctHolder->business->business_id),
+		'Payment Record'=>array('payMode/index', 'id'=>$model->paymentHolder->busAcctHolder->business->business_id),
+		$model->paymentHolder->busAcctHolder->business->name." - ".$model->name,
+	);
+	
+	if($paymentDetail !==null)
+	{
+		$this->menu=array(
+		
+			array('label'=>'View Payment', 'url'=>array('paymentDetail/view', 'id'=>$paymentDetail->payment_detail_id)),
+		);
+	}
+} elseif(Yii::app()->user->role == 'ADMIN')
+{
+
+	$this->breadcrumbs=array(
+		'Businesses'=>array('business/admin'),
+		$model->paymentHolder->busAcctHolder->business->name=>array('business/view', 'id'=>$model->paymentHolder->busAcctHolder->business->business_id),
+		'Payment Schedule' => array('payMode/index', 'id'=>$model->payment_holder_id),
+		$model->name,
+	);
+	
+	
+	if($paymentDetail === null)
+	{
+	$this->menu=array(
+			array('label'=>'Set Due Date and Amount Due', 'url'=>array('update', 'id'=>$model->pay_mode_id)),
+			array('label'=>'Create Payment', 'url'=>array('paymentDetail/create', 'id'=>$model->pay_mode_id)),
+		);	
+	} elseif($paymentDetail !==null)
+	{
+		$this->menu=array(
+			array('label'=>'Set Due Date and Amount Due', 'url'=>array('update', 'id'=>$model->pay_mode_id)),
+			array('label'=>'View Payment', 'url'=>array('paymentDetail/view', 'id'=>$model->paymentDetail->payment_detail_id)),
+		);
+	}
+
+}
+?>
+
+<h3 style="text-align:center"><b><?php echo $model->paymentHolder->busAcctHolder->business->name; ?> - <?php echo $model->name; ?></b></h3>
+<div class="view">
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		'name',
+		'amount_due',
+		'due_date',
+		'amount_paid',
+		'or_num',
+	),
+)); ?>
+</div>
