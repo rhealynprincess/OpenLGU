@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set('America/Los_Angeles');
+date_default_timezone_set('Asia/Manila');
 
 $script_tz = date_default_timezone_get();
 /*
