@@ -1,0 +1,20 @@
+Project and Program Monitoring System
+-View Reports (not working) -ok
+-Approve Comments (no display)
+-Status (not updated)
+
+
+Employee Information System
+-Register new account (not working) -ok
+-Leave credits
+-Add status 'Resigned'
+-Login using username instead of email -ok
+
+Procurement
+-Date and time display
+-Add 'remarks' field
+-Remove bids with failed evaluation 
+-Index display per user
+
+Business Permit and Licensing
+-Login using username instead of email -ok
