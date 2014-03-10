@@ -15,6 +15,7 @@ Procurement
 -Add 'remarks' field
 -Remove bids with failed evaluation 
 -Index display per user
+-Awarding
 
 Business Permit and Licensing
 -Login using username instead of email -ok
