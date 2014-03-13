@@ -81,7 +81,7 @@ class Admin extends CActiveRecord
 			'last_name' => 'Last Name',
 			'username' => 'Username',
 			'password' => 'Password',
-			'sector' => 'sector',
+			'sector' => 'Sector',
 			'user_role' => 'User Role',
 		);
 	}
