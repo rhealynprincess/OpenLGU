@@ -52,9 +52,10 @@ class Admin extends CActiveRecord
 		public function beforeSave()
         {
 			$users=UserTable::model()->findByAttributes(array('username'=>$this->username));
-				if($this->password==$users->password)	$pass=$this->password;
-        else $pass = md5($this->password);
-        $this->password = $pass;
+				//if($this->password==$users->password)	$pass=$this->password;
+				//else 
+				$pass = md5($this->password);
+        			$this->password = $pass;
         return true;
         }
 
