@@ -1,0 +1,17 @@
+<?php
+/* @var $this ProgressController */
+/* @var $model Progress */
+
+$this->breadcrumbs=array(
+		'My Businesses'=>array('business/index', 'id'=>$model->business->user_id),
+		$model->business->name => array('business/view', 'id'=>$model->business->business_id),
+		'Overall Progress' => array('progress/view', 'id'=>$model->progress_id),
+		'Update Progress',
+	);
+
+
+?>
+
+<h4 style="text-align:center"><b><?php echo $model->business->name.' - Update Progress';?></b></h4>
+
+<?php echo $this->renderPartial('_updateForm', array('model'=>$model)); ?>

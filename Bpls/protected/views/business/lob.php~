@@ -1,0 +1,4 @@
+<?php
+	
+	echo CHtml::link('LOB CODES', '/assets/uploads/documents/lob_codes.pdf');
+?>

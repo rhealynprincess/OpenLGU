@@ -1,0 +1,72 @@
+<?php
+/* @var $this EmergencyContactController */
+/* @var $emcModel EmergencyContact */
+/* @var $form CActiveForm */
+?>
+
+<div class="form">
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'emergency-contact-form',
+	'enableAjaxValidation'=>false,
+)); ?>
+
+	
+
+	<?php echo $form->errorSummary($emcModel); ?>
+	
+	<!--START OF EMERGENCY CONTACT-->
+    <div class="view">
+    	<h4 style="text-align:center"><b>Update Emergency Contact</b></h4>
+    	<p class="note">Fields with <span class="required">*</span> are required.</p>
+		<div class="row">
+			<?php echo $form->labelEx($emcModel,'first_name'); ?>
+			<?php echo $form->textField($emcModel,'first_name'); ?>
+			<?php echo $form->error($emcModel,'first_name'); ?>
+		</div>
+
+		<div class="row">
+			<?php echo $form->labelEx($emcModel,'middle_name'); ?>
+			<?php echo $form->textField($emcModel,'middle_name'); ?>
+			<?php echo $form->error($emcModel,'middle_name'); ?>
+		</div>
+
+		<div class="row">
+			<?php echo $form->labelEx($emcModel,'last_name'); ?>
+			<?php echo $form->textField($emcModel,'last_name'); ?>
+			<?php echo $form->error($emcModel,'last_name'); ?>
+		</div>
+
+		<div class="row">
+			<?php echo $form->labelEx($emcModel,'suffix_name'); ?>
+			<?php echo $form->textField($emcModel,'suffix_name'); ?>
+			<?php echo $form->error($emcModel,'suffix_name'); ?>
+		</div>
+
+		<div class="row">
+			<?php echo $form->labelEx($emcModel,'contact_num'); ?>
+			<?php echo $form->textField($emcModel,'contact_num'); ?>
+			<?php echo $form->error($emcModel,'contact_num'); ?>
+		</div>
+
+		<div class="row">
+			<?php echo $form->labelEx($emcModel,'contact_email'); ?>
+			<?php echo $form->textField($emcModel,'contact_email'); ?>
+			<?php echo $form->error($emcModel,'contact_email'); ?>
+		</div>
+
+		<div>
+			<?php echo $form->labelEx($emcModel, 'contact_relationship'); ?>
+			<?php echo $form->dropDownList($emcModel, 'contact_relationship', $emcModel::getRel(), array('prompt'=>'')); ?>
+			<?php echo $form->error($emcModel, 'contact_relationship'); ?>
+		</div>
+	</div>
+	<!--END OF EMERGENCY CONTACT-->
+	
+	<div class="row buttons">
+		<?php echo CHtml::submitButton($emcModel->isNewRecord ? 'Create' : 'Save'); ?>
+	</div>
+
+<?php $this->endWidget(); ?>
+
+</div><!-- form -->

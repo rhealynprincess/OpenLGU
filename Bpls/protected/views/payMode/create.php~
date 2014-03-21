@@ -1,0 +1,18 @@
+<?php
+/* @var $this PayModeController */
+/* @var $model PayMode */
+
+$this->breadcrumbs=array(
+	'Pay Modes'=>array('index'),
+	'Create',
+);
+
+$this->menu=array(
+	array('label'=>'List PayMode', 'url'=>array('index')),
+	array('label'=>'Manage PayMode', 'url'=>array('admin')),
+);
+?>
+
+<h1>Create PayMode</h1>
+
+<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

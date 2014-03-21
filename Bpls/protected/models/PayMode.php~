@@ -1,0 +1,101 @@
+<?php
+
+/**
+ * This is the model class for table "{{pay_mode}}".
+ *
+ * The followings are the available columns in table '{{pay_mode}}':
+ * @property integer $pay_mode_id
+ * @property integer $payment_holder_id
+ * @property string $due_date
+ * @property string $or_num
+ *
+ * The followings are the available model relations:
+ * @property Business $business
+ */
+class PayMode extends CActiveRecord
+{
+	/**
+	 * Returns the static model of the specified AR class.
+	 * @param string $className active record class name.
+	 * @return PayMode the static model class
+	 */
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return '{{pay_mode}}';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+			array('payment_holder_id', 'numerical', 'integerOnly'=>true),
+			array('due_date, or_num, amount_due, amount_paid', 'safe'),
+			array('amount_due, due_date', 'required'),
+			// The following rule is used by search().
+			// Please remove those attributes that should not be searched.
+			array('pay_mode_id, payment_holder_id, due_date, or_num, amount_due, amount_paid', 'safe', 'on'=>'search'),
+		);
+	}
+
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+			'paymentHolder' => array(self::BELONGS_TO, 'PaymentHolder', 'payment_holder_id'),
+			'paymentDetail' => array(self::HAS_ONE, 'PaymentDetail', 'pay_mode_id'),
+		);
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'pay_mode_id' => 'Pay Mode ID',
+			'payment_holder_id' => 'Payment Holder ID',
+			'due_date' => 'Due Date',
+			'or_num' => 'OR Number',
+			'name' => 'Payment',
+			'amount_due' => 'Amount Due',
+		);
+	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function search()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('pay_mode_id',$this->pay_mode_id);
+		$criteria->compare('payment_holder_id',$this->payment_holder_id);
+		$criteria->compare('due_date',$this->due_date,true);
+		$criteria->compare('or_num',$this->or_num,true);
+		$criteria->compare('amount_due',$this->amount_due,true);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+}

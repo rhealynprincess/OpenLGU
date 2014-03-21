@@ -1,0 +1,18 @@
+<?php
+/* @var $this ProjectProgramController */
+/* @var $model ProjectProgram */
+
+$this->breadcrumbs=array(
+	'Project Programs'=>array('index'),
+	'Create',
+);
+
+$this->menu=array(
+	array('label'=>'List ProjectProgram', 'url'=>array('index')),
+	array('label'=>'Manage ProjectProgram', 'url'=>array('admin')),
+);
+?>
+
+<h1>Create ProjectProgram</h1>
+
+<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

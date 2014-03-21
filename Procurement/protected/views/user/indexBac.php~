@@ -1,0 +1,92 @@
+<?php
+/* @var $this UserController */
+/* @var $dataProvider CActiveDataProvider */
+
+$this->breadcrumbs=array(
+	//'Users'=>array('index'),
+	'BAC members',
+);
+
+if (Yii::app()->user->checkAccess('admin'))
+	{
+	$this->menu=array(
+		array('label'=>'Search Users', 'url'=>array('search')),
+	);
+	}
+else if (Yii::app()->user->checkAccess('bacUser'))
+	{
+	$this->menu=array(
+	);
+	}
+else if (Yii::app()->user->checkAccess('bacChair'))
+	{
+	$this->menu=array(
+	);
+	}
+else if (Yii::app()->user->checkAccess('LCE'))
+	{
+	$this->menu=array(
+	);
+	}
+else if (Yii::app()->user->checkAccess('govUser'))
+	{
+	$this->menu=array(
+	);
+	}
+else if (Yii::app()->user->checkAccess('privateUser'))
+	{
+	$this->menu=array(
+	);
+	}	
+else if (Yii::app()->user->checkAccess('authenticated'))
+	{
+	$this->menu=array(
+	);
+	}
+else
+	{
+	$this->menu=array(
+		array('label'=>'Create User', 'url'=>array('site/createAccountOption')),
+	);
+	}
+	    
+?>
+
+
+<h1>Bids and Awards Committee</h1>
+
+
+<?php
+
+if(isset($dataProvider2)){
+	echo '<b>Local Chief Executive</b>';
+	$this->widget('zii.widgets.CListView', array(
+		'dataProvider'=>$dataProvider4,
+		//'itemView'=>'_viewBac',
+	));
+}
+if(isset($dataProvider2)){
+	echo '<b>BAC Chair</b>';
+	$this->widget('zii.widgets.CListView', array(
+		'dataProvider'=>$dataProvider3,
+		'itemView'=>'_viewBac',
+	));
+}
+if(isset($dataProvider)){
+	echo '<b>BAC Member</b>';
+	$this->widget('zii.widgets.CListView', array(
+		'dataProvider'=>$dataProvider,
+		'itemView'=>'_viewBac',
+	));
+}
+if(isset($dataProvider2)){
+	echo '<b>BAC Secretariat</b>';
+	$this->widget('zii.widgets.CListView', array(
+		'dataProvider'=>$dataProvider2,
+		'itemView'=>'_viewBac',
+	));
+}
+
+
+
+ ?>

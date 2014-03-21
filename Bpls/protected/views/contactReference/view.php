@@ -1,0 +1,62 @@
+<?php
+/* @var $this ContactReferenceController */
+/* @var $model ContactReference */
+
+/* ADMIN */
+if(Yii::app()->user->role == 'ADMIN')
+{
+	$this->breadcrumbs=array(
+		'Taxpayers'=>array('taxpayer/admin'),
+		$model->email => array('taxpayer/view', 'id'=>$model->user_id),
+		'Contact References',
+	);
+}
+
+/* REGISTERED */
+if(Yii::app()->user->role == 'REGISTERED')
+{
+	$this->breadcrumbs=array(
+		'My Profile'=>array('taxpayer/profile'),
+		'My Contact References',
+	);
+}
+
+$this->menu=array(
+	array('label'=>'Add new Contact Reference', 'url'=>array('create', 'id'=>$model->user_id)),
+);
+?>
+<?php if($dataProvider->getItemCount() > 1){ ?>
+<h4 style="text-align:center"><b>Contact References</b></h4>
+<div class="view">
+
+	<?php $this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'contact-reference-grid',
+	'dataProvider'=>$dataProvider,
+	'columns'=>array(
+		'type',
+		'detail',
+		array(
+			'class'=>'CButtonColumn',
+			'template'=>'{update}{delete}',
+		),
+	),
+)); ?>
+</div>
+<?php } elseif($dataProvider->getItemCount() == 1){ ?>
+<h4 style="text-align:center"><b>Contact References</b></h4>
+<div class="view">
+
+	<?php $this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'contact-reference-grid',
+	'dataProvider'=>$dataProvider,
+	'columns'=>array(
+		'type',
+		'detail',
+		array(
+			'class'=>'CButtonColumn',
+			'template'=>'{update}',
+		),
+	),
+)); ?>
+</div>
+<?php } ?>

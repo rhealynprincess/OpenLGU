@@ -1,0 +1,185 @@
+<?php
+/* @var $this PreBidConferenceController */
+/* @var $model PreBidConference */
+
+$this->breadcrumbs=array(
+	'Invitations'=>array('index'),
+	substr(Invitation::model()->findByPk($model->invitation_id)->title,0,15).'...' => array('invitation/view','id'=>$model->invitation_id) ,
+	'Bid',
+);
+
+if(true)
+	{
+	$this->menu = array_merge($this->menu,array(
+		array('label'=>'Search Invitation', 'url'=>array('invitation/search')),
+		array('label'=>'View All Invitations', 'url'=>array('invitation/indexAll')),
+	));
+	}
+if (Yii::app()->user->checkAccess('privateUser'))
+	{
+	$this->menu = array_merge($this->menu,array(
+		array('label'=>'Cancel Bid', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+	));
+	}	
+if (Yii::app()->user->checkAccess('bacUser')||Yii::app()->user->checkAccess('admin'))
+	{
+	$this->menu = array_merge($this->menu,array(
+		array('label'=>'Create Invitation', 'url'=>array('invitation/create')),
+	));
+	}	  
+if (Yii::app()->user->checkAccess('admin'))
+	{
+	$this->menu = array_merge($this->menu,array(
+		array('label'=>'Manage Invitation', 'url'=>array('invitation/admin')),
+	));
+	}
+?>
+
+<?php
+	$criteria2 =new CDbCriteria();
+	$criteria2->condition="id='$model->id' and checker='null'";
+	$result2=FinancialBid::model()->find($criteria2);
+	if($result2!=null){
+ 	echo '<span class="rightLink">';
+	echo CHtml::link(CHtml::encode('Update Bid'), array('bid/submit','id'=>$model->invitation_id));
+	echo '</span>';
+	}
+	?>
+<?php
+ 	echo '<span class="rightLink">';
+	echo CHtml::link(CHtml::encode('Back to Invitation'), array('invitation/view', 'id'=>$model->invitation_id));
+	echo '</span>';
+	?>
+	
+<br/><br/>
+<?php
+	
+	$inv=Invitation::model()->findByPk($model->invitation_id);
+	if($inv->classification=="Infrastracture"){
+?>
+<h3 class="stages">Eligibility Bid </h3>
+<table>
+<tr>
+<td>
+<b>Documents</b>
+</td>
+<td>
+<?php	
+$org = Organization::model()->findByPk($model->user_id);
+if(isset($org)){
+$pdf=explode(".pdf", $org->eligibility_doc_file_location);
+echo '<a href="files/bid/'.$org->eligibility_doc_file_location.'">'.$pdf[0].'.pdf</a>';
+}
+?>
+</td>
+</tr>
+
+<tr><td>
+<b>Status</b>	
+</td>
+
+<td>
+<?php 
+echo $modele->status;?>
+</td></tr>
+
+<tr><td>
+<b>Date evaluated</b>	
+</td><td>
+<?php echo $modele->date_evaluated. ' '.$modele->time_evaluated;;?>
+</td></tr>
+
+<tr><td>
+<b>Date submitted</b>	
+</td><td>
+<?php echo $modele->date_submitted. ' '.$modele->time_submitted;;?>
+</td></tr>
+
+<tr><td>
+<b>Date last modified</b>	
+</td><td>
+<?php echo $modele->date_last_modified. ' '.$modele->time_last_modified;?>
+</td></tr>
+
+</table>
+<?php }?>	
+	
+		
+<h3 class="stages">Technical Bid </h3>
+<table>
+<tr>
+<td>
+<b>Documents</b>
+</td>
+<td>
+<?php 
+	$pdf=explode(".pdf",$modelt->file_location ); 
+	echo '<a href="files/bid/'.$modelt->file_location.'">'.$pdf[0].'.pdf</a>';
+?>
+</td>
+</tr>
+
+<tr><td>
+<b>Status</b>	
+</td><td>
+<?php echo $modelt->status;?>
+</td></tr>
+
+<tr><td>
+<b>Date evaluated</b>	
+</td><td>
+<?php echo $modelt->date_evaluated. ' '.$modelt->time_evaluated;;?>
+</td></tr>
+
+<tr><td>
+<b>Date submitted</b>	
+</td><td>
+<?php echo $modelt->date_submitted. ' '.$modelt->time_submitted;;?>
+</td></tr>
+
+<tr><td>
+<b>Date last modified</b>	
+</td><td>
+<?php echo $modelt->date_last_modified. ' '.$modelt->time_last_modified;?>
+</td></tr>
+
+</table>
+
+
+<h3 class="stages">Financial Bid </h3>
+<table>
+<tr>
+<td>
+<b>Documents</b>
+</td>
+<td>
+<?php $pdf=explode(".pdf", $modelf->file_location);?>
+<?php	echo '<a href="files/bid/'.$modelf->file_location.'">'.$pdf[0].'.pdf</a>';?>
+</td>
+</tr>
+
+<tr><td>
+<b>Status</b>	
+</td><td>
+<?php echo $modelf->status;?>
+</td></tr>
+
+<tr><td>
+<b>Date evaluated</b>	
+</td><td>
+<?php echo $modelf->date_evaluated. ' '.$modelf->time_evaluated;;?>
+</td></tr>
+
+<tr><td>
+<b>Date submitted</b>
+</td><td>
+<?php echo $modelf->date_submitted. ' '.$modelf->time_submitted;;?>
+</td></tr>
+
+<tr><td>
+<b>Date last modified</b>	
+</td><td>
+<?php echo $modelf->date_last_modified. ' '.$modelf->time_last_modified;?>
+</td></tr>
+
+</table>

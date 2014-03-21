@@ -1,0 +1,6 @@
+
+<?php
+
+	echo CHtml::link(CHtml::encode('government user'),array('/user/createGovUser'));
+	echo '<br/>';
+	echo CHtml::link(CHtml::encode('private user'),array('/user/createPrivateUser'));

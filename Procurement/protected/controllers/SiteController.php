@@ -1,0 +1,175 @@
+<?php
+
+class SiteController extends Controller
+{
+	/**
+	 * Declares class-based actions.
+	 */
+	public function actions()
+	{
+		return array(
+			// captcha action renders the CAPTCHA image displayed on the contact page
+			'captcha'=>array(
+				'class'=>'CCaptchaAction',
+				'backColor'=>0xFFFFFF,
+			),
+			// page action renders "static" pages stored under 'protected/views/site/pages'
+			// They can be accessed via: index.php?r=site/page&view=FileName
+			'page'=>array(
+				'class'=>'CViewAction',
+			),
+		);
+	}
+
+	/**
+	 * This is the default 'index' action that is invoked
+	 * when an action is not explicitly requested by users.
+	 */
+	public function actionIndex()
+	{
+		// renders the view file 'protected/views/site/index.php'
+		// using the default layout 'protected/views/layouts/main.php'
+		$this->render('index');
+	}
+	
+	public function actionReport()
+	{
+		$model = new Award;
+		// renders the view file 'protected/views/site/index.php'
+		// using the default layout 'protected/views/layouts/main.php'
+		
+		
+		$mdel=new CActiveDataProvider('Award');
+		
+		$this->render('report',array(
+			'model'=>$model,
+		));
+	}
+	
+	public function actionLgu()
+	{
+		$model = Organization::model()->findByPk(0);
+		$model2 = GovernmentAgency::model()->findByPk(0);
+		$model3 = Lgu::model()->findByPk(0);
+		$this->render('lgu',array('model'=>$model,'model2'=>$model2,'model3'=>$model3));
+	}
+	
+	public function actionUpdateLguProfile()
+	{
+		$error = '';
+		if (Yii::app()->user->checkAccess('admin'))
+	    {
+	    }
+	    else{
+		    throw new CHttpException(403, 'You are not authorized to perform this action');
+	    }
+		
+	    $model = Organization::model()->findByPk(0);
+		$model2 = GovernmentAgency::model()->findByPk(0);
+		$model3 = Lgu::model()->findByPk(0);
+		
+		if(isset($_POST['Organization'])){
+			$model->attributes=$_POST['Organization'];
+			if(isset($_POST['GovernmentAgency'])){
+				$model2->attributes=$_POST['GovernmentAgency'];
+				$model2->id = 0;
+			}
+			if(isset($_POST['Lgu'])){
+				$model3->attributes=$_POST['Lgu'];
+				$model3->id =0;
+			}
+			if($model->save()&&$model2->save()&&$model3->save()){
+			//$this->render('updateLgu',array('model'=>$model,'model2'=>$model2,'model3'=>$model3,'error'=>$error));
+				$this->redirect(array('lgu'));
+			}
+		}
+		
+		$this->render('updateLgu',array('model'=>$model,'model2'=>$model2,'model3'=>$model3,'error'=>$error));
+		
+	}
+	
+	public function actionInit()
+	{
+		$this->render('init');
+	}
+	
+	public function actionCreateAccountOption()
+	{
+		$this->render('createAccountOption');
+	}
+	
+	/**
+	 * This is the action to handle external exceptions.
+	 */
+	public function actionError()
+	{
+		if($error=Yii::app()->errorHandler->error)
+		{
+			if(Yii::app()->request->isAjaxRequest)
+				echo $error['message'];
+			else
+				$this->render('error', $error);
+		}
+	}
+
+	/**
+	 * Displays the contact page
+	 */
+	public function actionContact()
+	{
+		$model=new ContactForm;
+		if(isset($_POST['ContactForm']))
+		{
+			$model->attributes=$_POST['ContactForm'];
+			if($model->validate())
+			{
+				$name='=?UTF-8?B?'.base64_encode($model->name).'?=';
+				$subject='=?UTF-8?B?'.base64_encode($model->subject).'?=';
+				$headers="From: $name <{$model->email}>\r\n".
+					"Reply-To: {$model->email}\r\n".
+					"MIME-Version: 1.0\r\n".
+					"Content-type: text/plain; charset=UTF-8";
+
+				mail(Yii::app()->params['adminEmail'],$subject,$model->body,$headers);
+				Yii::app()->user->setFlash('contact','Thank you for contacting us. We will respond to you as soon as possible.');
+				$this->refresh();
+			}
+		}
+		$this->render('contact',array('model'=>$model));
+	}
+
+	/**
+	 * Displays the login page
+	 */
+	public function actionLogin()
+	{
+		$model=new LoginForm;
+
+		// if it is ajax validation request
+		if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
+		{
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+
+		// collect user input data
+		if(isset($_POST['LoginForm']))
+		{
+			$model->attributes=$_POST['LoginForm'];
+			// validate user input and redirect to the previous page if valid
+			if($model->validate() && $model->login())
+				$this->redirect(Yii::app()->user->returnUrl);
+		}
+		// display the login form
+		$this->render('login',array('model'=>$model));
+	}
+
+	/**
+	 * Logs out the current user and redirect to homepage.
+	 */
+	public function actionLogout()
+	{
+		Yii::app()->user->logout();
+		$this->redirect(Yii::app()->homeUrl);
+	}
+}

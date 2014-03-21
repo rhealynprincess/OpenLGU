@@ -1,0 +1,29 @@
+<?php
+/* @var $this ProjectImplementorController */
+/* @var $model ProjectImplementor */
+
+/*$this->breadcrumbs=array(
+	'Project Implementors'=>array('index'),
+	'Create',
+);
+*/
+
+$this->widget('zii.widgets.CBreadcrumbs', array (
+
+'homeLink'=>CHtml::link('Home', array('projectImplementor/index')),
+'links' => array(
+			"Create Project/Program",
+		),
+));
+
+
+$this->menu=array(
+	array('label'=>'List Projects and Program', 'url'=>array('index')),
+	array('label'=>'Manage Project/Program', 'url'=>array('admin')),
+	array('label'=>'View Reports', 'url'=>array('report/index')),
+);
+?>
+
+<h1>Create Project/Program</h1>
+
+<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

@@ -1,0 +1,68 @@
+#calendarContainer {
+    float: left;
+}
+
+#calendar {
+    border: solid 1px #ddd;
+    padding: 1px;
+}
+
+#calendar th, #calendar td {
+    text-align: center;
+}
+
+#calendar td {
+    border-top: solid 1px white;
+    border-right: solid 1px white;
+    padding: 0px;
+}
+
+#calendar td a {
+    display: block;
+    background-color: #def;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 18px;
+}
+
+#calendar td a:hover, #calendar .calendar-selected-day a {
+    background-color: #afa;
+}
+
+#calendar td a.highlight {
+    background-color: #ff8;
+}
+
+#calendar .weekdays-row th {
+    background-color: #fff;
+}
+
+#calendar .calendar-selected-day {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+#calendarList {
+    float: right;
+    width: 590px;
+}
+
+#calendarList h3 {
+    text-align: center;
+}
+
+#calendarList table tr td {
+    border-top: solid 1px #ddd;
+}
+
+#calendarList table th.days {
+    width: 20px;
+}
+
+#calendarList table th.author {
+    width: 100px;
+}
+
+#entry {
+    display: block;
+}

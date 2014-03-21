@@ -1,0 +1,15 @@
+<?php
+/* @var $this ApprovalController */
+/* @var $model Approval */
+
+$this->breadcrumbs=array(
+		'Businesses'=>array('business/admin'),
+		$acctHolder->business->name => array('business/view', 'id'=>$acctHolder->business->business_id),
+		'Create Approval',
+	);
+
+?>
+
+<h3 style="text-align:center"><b>Create Approval</b></h3>
+
+<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

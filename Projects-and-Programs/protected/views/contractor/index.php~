@@ -1,0 +1,29 @@
+<?php
+/* @var $this ContractorController */
+/* @var $dataProvider CActiveDataProvider */
+/*
+$this->breadcrumbs=array(
+	'Contractors',
+);
+*/
+
+$this->widget('zii.widgets.CBreadcrumbs', array (
+
+'homeLink'=>CHtml::link('Home', array('Admin/index')),
+'links' => array(
+			$model->name=>array('view', 'id'=>$model->name),
+		),
+));
+
+$this->menu=array(
+	array('label'=>'Create Contractor', 'url'=>array('create')),
+	array('label'=>'Manage Contractor', 'url'=>array('admin')),
+);
+?>
+
+<h1>Contractors</h1>
+
+<?php $this->widget('zii.widgets.CListView', array(
+	'dataProvider'=>$dataProvider,
+	'itemView'=>'_view',
+)); ?>

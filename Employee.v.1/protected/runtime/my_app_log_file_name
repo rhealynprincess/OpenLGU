@@ -1,0 +1,97 @@
+Mar 18 02:10:39 [system.CModule                ] : <T> Loading "log" application component
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:39 [system.CModule                ] : <T> Loading "request" application component
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:39 [system.CModule                ] : <T> Loading "urlManager" application component
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:39 [system.web.filters.CFilterChain] : <T> Running filter CalendarController.filteraccessControl()
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:39 [system.CModule                ] : <T> Loading "user" application component
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:39 [system.CModule                ] : <T> Loading "session" application component
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:39 [system.CModule                ] : <T> Loading "db" application component
+in C:\wamp\www\eis\protected\controllers\CalendarController.php (128)
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:39 [system.db.CDbConnection       ] : <T> Opening DB connection
+in C:\wamp\www\eis\protected\controllers\CalendarController.php (128)
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:39 [system.CModule                ] : <T> Loading "widgetFactory" application component
+in C:\wamp\www\eis\protected\views\calendar\view.php (23)
+in C:\wamp\www\eis\protected\controllers\CalendarController.php (136)
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:39 [system.CModule                ] : <T> Loading "assetManager" application component
+in C:\wamp\www\eis\protected\extensions\simple-calendar\SimpleCalendarWidget.php (35)
+in C:\wamp\www\eis\protected\extensions\simple-calendar\SimpleCalendarWidget.php (29)
+in C:\wamp\www\eis\protected\views\calendar\view.php (23)
+Mar 18 02:10:39 [system.CModule                ] : <T> Loading "clientScript" application component
+in C:\wamp\www\eis\protected\extensions\simple-calendar\SimpleCalendarWidget.php (36)
+in C:\wamp\www\eis\protected\extensions\simple-calendar\SimpleCalendarWidget.php (29)
+in C:\wamp\www\eis\protected\views\calendar\view.php (23)
+Mar 18 02:10:39 [system.CModule                ] : <T> Loading "coreMessages" application component
+in C:\wamp\www\eis\protected\views\calendar\view.php (36)
+in C:\wamp\www\eis\protected\controllers\CalendarController.php (136)
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.CModule                ] : <T> Loading "log" application component
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.CModule                ] : <T> Loading "request" application component
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.CModule                ] : <T> Loading "urlManager" application component
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.web.filters.CFilterChain] : <T> Running filter SiteController.filteraccessControl()
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.CModule                ] : <T> Loading "user" application component
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.CModule                ] : <T> Loading "session" application component
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.CModule                ] : <T> Loading "db" application component
+in C:\wamp\www\eis\protected\models\User.php (73)
+in C:\wamp\www\eis\protected\controllers\SiteController.php (68)
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.db.CDbConnection       ] : <T> Opening DB connection
+in C:\wamp\www\eis\protected\models\User.php (73)
+in C:\wamp\www\eis\protected\controllers\SiteController.php (68)
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.db.ar.CActiveRecord    ] : <T> User.findByPk()
+in C:\wamp\www\eis\protected\controllers\SiteController.php (68)
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.db.ar.CActiveRecord    ] : <T> OvertimeEmployee.findAll()
+in C:\wamp\www\eis\protected\models\Overtime.php (72)
+in C:\wamp\www\eis\protected\controllers\SiteController.php (72)
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.db.ar.CActiveRecord    ] : <T> Transfer.findAll()
+in C:\wamp\www\eis\protected\models\Transfer.php (88)
+in C:\wamp\www\eis\protected\controllers\SiteController.php (73)
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.db.ar.CActiveRecord    ] : <T> Application.findAll()
+in C:\wamp\www\eis\protected\models\Application.php (105)
+in C:\wamp\www\eis\protected\controllers\SiteController.php (74)
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.CModule                ] : <T> Loading "clientScript" application component
+in C:\wamp\www\eis\protected\views\site\profile.php (7)
+in C:\wamp\www\eis\protected\controllers\SiteController.php (75)
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.db.ar.CActiveRecord    ] : <T> lazy loading User.employee
+in C:\wamp\www\eis\protected\views\site\profile.php (15)
+in C:\wamp\www\eis\protected\controllers\SiteController.php (75)
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.db.ar.CActiveRecord    ] : <T> lazy loading Employee.position
+in C:\wamp\www\eis\protected\views\site\profile.php (15)
+in C:\wamp\www\eis\protected\controllers\SiteController.php (75)
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.db.ar.CActiveRecord    ] : <T> lazy loading Position.department
+in C:\wamp\www\eis\protected\models\Position.php (56)
+in C:\wamp\www\eis\protected\views\site\profile.php (17)
+in C:\wamp\www\eis\protected\controllers\SiteController.php (75)
+Mar 18 02:10:40 [system.CModule                ] : <T> Loading "widgetFactory" application component
+in C:\wamp\www\eis\protected\views\site\profile.php (41)
+in C:\wamp\www\eis\protected\controllers\SiteController.php (75)
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.CModule                ] : <T> Loading "assetManager" application component
+in C:\wamp\www\eis\protected\views\site\profile.php (41)
+in C:\wamp\www\eis\protected\controllers\SiteController.php (75)
+in C:\wamp\www\eis\index.php (13)
+Mar 18 02:10:40 [system.CModule                ] : <T> Loading "coreMessages" application component
+in C:\wamp\www\eis\protected\views\layouts\main.php (90)
+in C:\wamp\www\eis\protected\views\layouts\column2.php (15)
+in C:\wamp\www\eis\protected\controllers\SiteController.php (75)

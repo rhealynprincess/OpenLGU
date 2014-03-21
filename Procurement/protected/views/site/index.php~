@@ -1,0 +1,201 @@
+<?php
+/* @var $this SiteController */
+
+$this->pageTitle=Yii::app()->name;
+/*
+		echo '<br/><span style="text-align:right">';
+ 		echo CHtml::link(CHtml::encode('view my profile'), array('user/view','id'=>Yii::app()->user->id));
+ 		echo '</span><br/>';
+ */
+if(Yii::app()->user->checkAccess('privateUser')){
+/*
+//my invitations
+	echo '<div style="background-color:#eeeeee;height:20px;text-align:center"><b>My Invitations</b></div>';
+	$dataProvider=new CActiveDataProvider('Bid',array(
+	    'criteria'=>array(
+	        'condition'=>'user_id='.Yii::app()->user->id." and status='active'",
+	    	),
+	    )
+	  );
+		  
+	$this->widget('zii.widgets.CListView', array(
+	'dataProvider'=>$dataProvider,
+	'itemView'=>'_viewMyInvitations',
+	'enablePagination'=>true,
+	'summaryText'=>'',
+	'htmlOptions'=>array(
+	),
+	'pager'=>array('class'=>'CLinkPager','pageSize'=>15,'maxButtonCount'=>20),
+));
+//my awards
+	echo '<div style="background-color:#eeeeee;height:20px;text-align:center"><b>My Awards</b></div>';
+	$dataProvider=new CActiveDataProvider('Award',array(
+	    'criteria'=>array(
+	        'condition'=>'awardee='.Yii::app()->user->id,
+	    	),
+	    )
+	  );
+		  
+	$this->widget('zii.widgets.CListView', array(
+	'dataProvider'=>$dataProvider,
+	'itemView'=>'_viewMyAwards',
+	'enablePagination'=>true,
+	'summaryText'=>'',
+	'htmlOptions'=>array(
+	),
+	'pager'=>array('class'=>'CLinkPager','pageSize'=>15,'maxButtonCount'=>20),
+));
+
+//myfailedbids
+	echo '<b>My Failed Bids</b>';
+	$dataProvider=new CActiveDataProvider('Bid',array(
+	    'criteria'=>array(
+	        'condition'=>'user_id='.Yii::app()->user->id." and status='active'",
+	    	),
+	    )
+	  );
+		  
+	$this->widget('zii.widgets.CListView', array(
+	'dataProvider'=>$dataProvider,
+	'itemView'=>'_viewMyInvitations',
+	'enablePagination'=>true,
+	'summaryText'=>'',
+	'htmlOptions'=>array(
+	),
+	'pager'=>array('class'=>'CLinkPager','pageSize'=>15,'maxButtonCount'=>20),
+));
+*/
+}
+else if (Yii::app()->user->checkAccess('bacSec')||Yii::app()->user->checkAccess('LCE')||Yii::app()->user->checkAccess('admin'))
+	{
+//my bidding posts
+	echo '<div style="background-color:#eeeeee;height:20px;text-align:center"><b>My Bidding Posts</b></div>';
+	$dataProvider=new CActiveDataProvider('Invitation',array(
+	    'criteria'=>array(
+	        'condition'=>'created_by='.Yii::app()->user->id."and status='active'",
+	    	),
+	    )
+	  );
+		  
+	$this->widget('zii.widgets.CListView', array(
+	'dataProvider'=>$dataProvider,
+	'itemView'=>'_viewMyPosts',
+	'enablePagination'=>true,
+	'summaryText'=>'',
+	'htmlOptions'=>array(
+	),
+	'pager'=>array('class'=>'CLinkPager','pageSize'=>15,'maxButtonCount'=>20),
+));
+//my pending posts
+	echo '<div style="background-color:#eeeeee;height:20px;text-align:center"><b>My Pending Posts</b></div>';
+	$dataProvider=new CActiveDataProvider('Invitation',array(
+	    'criteria'=>array(
+	        'condition'=>"status='pending'",
+	    	),
+	    )
+	  );
+		  
+	$this->widget('zii.widgets.CListView', array(
+	'dataProvider'=>$dataProvider,
+	'itemView'=>'_viewMyPosts',
+	'enablePagination'=>true,
+	'summaryText'=>'',
+	'htmlOptions'=>array(
+	),
+	'pager'=>array('class'=>'CLinkPager','pageSize'=>15,'maxButtonCount'=>20),
+));
+//my awards
+	echo '<div style="background-color:#eeeeee;height:20px;text-align:center"><b>My Awarded Contracts</b></div>';
+	$dataProvider=new CActiveDataProvider('Award',array(
+	    'criteria'=>array(
+	        'condition'=>'created_by='.Yii::app()->user->id,
+	    	),
+	    )
+	  );
+		  
+	$this->widget('zii.widgets.CListView', array(
+	'dataProvider'=>$dataProvider,
+	'itemView'=>'_viewMyPosts',
+	'enablePagination'=>true,
+	'summaryText'=>'',
+	'htmlOptions'=>array(
+	),
+	'pager'=>array('class'=>'CLinkPager','pageSize'=>15,'maxButtonCount'=>20),
+));		
+	}
+else if (Yii::app()->user->checkAccess('admin'))
+	{
+	}
+
+else if (Yii::app()->user->checkAccess('bacChair'))
+	{
+	echo '<div style="background-color:#eeeeee;height:20px;text-align:center"><b>Bids for Awarding</b></div>';
+	$dataProvider=new CActiveDataProvider('Invitation',array(
+	    'criteria'=>array(
+	        'condition'=>'created_by='.Yii::app()->user->id."and status='active'",
+	    	),
+	    )
+	  );
+		  
+	$this->widget('zii.widgets.CListView', array(
+	'dataProvider'=>$dataProvider,
+	'itemView'=>'_viewMyPosts',
+	'enablePagination'=>true,
+	'summaryText'=>'',
+	'htmlOptions'=>array(
+	),
+	'pager'=>array('class'=>'CLinkPager','pageSize'=>15,'maxButtonCount'=>20),
+));
+
+	//my awards
+	echo '<div style="background-color:#eeeeee;height:20px;text-align:center"><b>My Awarded Contracts</b></div>';
+	$dataProvider=new CActiveDataProvider('Award',array(
+	    'criteria'=>array(
+	        'condition'=>'created_by='.Yii::app()->user->id,
+	    	),
+	    )
+	  );
+		  
+	$this->widget('zii.widgets.CListView', array(
+	'dataProvider'=>$dataProvider,
+	'itemView'=>'_viewMyPosts',
+	'enablePagination'=>true,
+	'summaryText'=>'',
+	'htmlOptions'=>array(
+	),
+	'pager'=>array('class'=>'CLinkPager','pageSize'=>15,'maxButtonCount'=>20),
+));
+
+	
+	}
+
+else if (Yii::app()->user->checkAccess('bacUser'))
+	{
+//my bidding posts
+	echo '<div style="background-color:#eeeeee;height:20px;text-align:center"><b>Bids for Evaluation</b></div>';
+	$dataProvider=new CActiveDataProvider('Invitation',array(
+	    'criteria'=>array(
+	        'condition'=>'created_by='.Yii::app()->user->id."and status='active'",
+	    	),
+	    )
+	  );
+		  
+	$this->widget('zii.widgets.CListView', array(
+	'dataProvider'=>$dataProvider,
+	'itemView'=>'_viewMyPosts',
+	'enablePagination'=>true,
+	'summaryText'=>'',
+	'htmlOptions'=>array(
+	),
+	'pager'=>array('class'=>'CLinkPager','pageSize'=>15,'maxButtonCount'=>20),
+));
+
+}
+
+else{
+ 		echo CHtml::link(CHtml::encode('Invitations'), array('invitation/index'));
+ 		echo '<br/>';
+ 		echo CHtml::link(CHtml::encode('Awards'), array('award/index'));
+ 		echo '<br/>';
+}
+?>

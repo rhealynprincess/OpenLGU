@@ -1,0 +1,81 @@
+<?php
+/* @var $this InvitationController */
+/* @var $model Invitation */
+/* @var $form CActiveForm */
+?>
+<?php
+	echo '<h4>'.$data->title.'</h4>';
+?>
+
+<table>
+	<tr>
+		<td style="width:35%"><b>Procuring Entity</b></td>
+		<td><?php echo $data->procuring_entity;?></td>
+	</tr>
+	<tr>
+		<td><b>Area of Delivery</b></td>
+		<td><?php echo $data->area_of_delivery;?></td>
+	</tr>
+	<tr>
+		<td><b>Procurement Mode</b></td>
+		<td><?php echo $data->procurement_mode;?></td>
+	</tr>
+	<tr>
+		<td><b>Classification</b></td>
+		<td><?php echo $data->classification;?></td>
+	</tr>
+	<tr>
+		<td><b>Category</b></td>
+		<td><?php echo $data->category;?></td>
+	</tr>
+	<tr>
+		<td><b>Approved Budget for the Contract (Php)</b></td>
+		<td><?php echo Yii::app()->format->formatNumber($data->abc);?></td>
+	</tr>
+	<tr>
+		<td><b>Contact Details</b></td>
+		<td><?php echo $data->contact_details;?></td>
+	</tr>
+	<tr>
+		<td style="vertical-align: top"><b>Description</b></td>
+		<td><?php echo nl2br($data->description);?></td>
+	</tr>
+	<tr>
+		<td><b>Date/Time Published</b></td>
+		<td><?php echo $data->date_published.' '.$data->time_published;?></td>
+	</tr>
+	<tr>
+		<td><b>Opening Date/Time</b></td>
+		<td><?php echo $data->date_opening.' '.$data->time_opening;?></td>
+	</tr>
+	<tr>
+		<td><b>Closing Date/Time</b></td>
+		<td><?php echo $data->date_closing.' '.$data->time_closing;?></td>
+	</tr>
+	<tr>
+		<?php $prebid= PreBidConference::model()->findByPk($data->id);?>
+		<td><b>Pre-Bid Conference Date/Time</td>
+		<td><br/> Start Date<?php echo $prebid->date_start;?>
+		<br/> End Date<?php echo $prebid->date_end;?>
+		<br/> Start Time<?php echo $prebid->time_start;?>
+		<br/> End Time<?php echo $prebid->time_end;?></td>
+		
+	</tr>
+	<!-- 
+	<tr>
+		<td><b>Status</b></td>
+		<td><?php echo $data->status;?></td>
+	</tr>
+	 --> 
+	<tr>
+		<td><b>Created by</b></td>
+		<td>
+	 <?php
+	$creator2 = $creator->first_name.' '.strtoupper(substr($creator->middle_name,0,1)).'. '.$creator->last_name;
+	echo $creator2;
+	?>
+		</td>
+	</tr>
+	
+</table>
+

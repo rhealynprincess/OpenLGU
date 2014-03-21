@@ -1,0 +1,32 @@
+<?php
+/* @var $this BusAcctDetailController */
+/* @var $dataProvider CActiveDataProvider */
+
+if(Yii::app()->user->role == 'ASSESSOR')
+{
+	$this->breadcrumbs=array(
+		'Businesses'=>array('business/admin'),
+		$acctHolder->business->name => array('business/view', 'id'=>$acctHolder->business->business_id),
+		'Assessment',
+	);
+
+	$this->menu=array(
+		array('label'=>'Create Assessment', 'url'=>array('create', 'id'=>$acctHolder->account_holder_id)),
+		
+	);
+} elseif(Yii::app()->user->role == 'REGISTERED')
+{
+	$this->breadcrumbs=array(
+		'My Businesses'=>array('index', 'id'=>$acctHolder->user_id),
+		$acctHolder->business->name => array('business/view', 'id'=>$acctHolder->business_id),
+		'Assessments',
+	);
+}
+?>
+
+<h3>Business Account Details</h3>
+
+<?php $this->widget('zii.widgets.CListView', array(
+	'dataProvider'=>$dataProvider,
+	'itemView'=>'_view',
+)); ?>

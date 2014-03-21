@@ -1,0 +1,94 @@
+<?php
+/* @var $this InvitationController */
+/* @var $dataProvider CActiveDataProvider */
+
+$this->pageTitle=Yii::app()->name;
+$this->breadcrumbs=array(
+	'Invitations'=>array('index'),
+	$cat,
+);
+
+	/*
+if (Yii::app()->user->checkAccess('admin'))
+	{
+	$this->menu=array(
+		array('label'=>'Manage Invitation', 'url'=>array('admin')),
+		array('label'=>'Create Invitation', 'url'=>array('create')),
+		array('label'=>'Search Invitation', 'url'=>array('search')),
+	);
+	}
+else if (Yii::app()->user->checkAccess('bacUser'))
+	{
+	$this->menu=array(
+		array('label'=>'Create Invitation', 'url'=>array('create')),
+	);
+	}
+else if (Yii::app()->user->checkAccess('authenticated'))
+	{
+	$this->menu=array(
+	);
+	}
+else
+	{
+	$this->menu=array(
+	);
+	}*/
+	
+	
+if(true)
+	{
+	$this->menu = array_merge($this->menu,array(
+		array('label'=>'Search Invitation', 'url'=>array('search')),
+		array('label'=>'View All Invitations', 'url'=>array('indexAll')),
+		array('label'=>'View Invitations by Classification', 'url'=>array('index')),
+		
+	));
+	}
+if (Yii::app()->user->checkAccess('bacSec'))
+	{
+	$this->menu = array_merge($this->menu,array(
+		array('label'=>'Create Invitation', 'url'=>array('create')),
+	));
+	}	  
+if (Yii::app()->user->checkAccess('bacSec'))
+	{
+	$this->menu = array_merge($this->menu,array(
+		array('label'=>'Manage Invitation', 'url'=>array('admin')),
+	));
+	}
+		
+echo '<h1>'.$cat.'</h1>';
+	
+?>
+
+<div class="viewAll" style="border:none;height:20px;padding:0px">
+	<div class="width30" style="background-color:#dddddd;height:20px;text-align:center;font-weight:bold">
+	Title
+	</div>
+	<div class="width30" style="background-color:#eeeeee;height:20px;text-align:center;font-weight:bold">
+	Category
+	</div>
+	<div class="width40" style="background-color:#dddddd;height:20px;text-align:center;font-weight:bold">
+	Description
+	</div>
+</div>
+<?php
+
+if(Yii::app()->user->checkAccess('bacUser')||Yii::app()->user->checkAccess('admin')){
+	if(isset($show)){
+		if($show=='active'){
+			echo '<b>active </b>';
+			echo CHtml::link(CHtml::encode('pending'), array('index','show'=>'pending'));
+		}
+		if($show=='pending'){
+			echo CHtml::link(CHtml::encode('active '), array('index','show'=>'active'));
+			echo '<b>pending</b>';
+		}
+	}
+}
+
+$this->widget('zii.widgets.CListView', array(
+	'dataProvider'=>$dataProvider,
+	'itemView'=>'_view3',
+	'summaryText'=>'',
+)); ?>
