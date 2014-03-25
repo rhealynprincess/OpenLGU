@@ -9,7 +9,7 @@ $this->pageTitle=Yii::app()->name;
 
 Features:
 <ul>
-<li>Account Creation
+<li>Account Creation (test)
 <li>Business Registration
 <li>Assessment of Fees
 <li>Payment Records
